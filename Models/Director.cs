@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 namespace MoviesWebApplication
 {
     public partial class Director
@@ -9,6 +10,7 @@ namespace MoviesWebApplication
         {
             Movies = new HashSet<Movie>();
         }
+        [Key]
         public int DirectorId { get; set; }
         [Display(Name ="Режисер")]
         public string FullName { get { return string.Format("{0} {1}", Name, Surname); } }

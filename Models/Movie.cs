@@ -22,7 +22,7 @@ namespace MoviesWebApplication
         [Display(Name = "Тривалість(хв)")]
         public int LengthMinutes { get; set; }
         
-        [Display(Name ="Режисер")]
+        [Display(Name ="Ідентифікатор режисера")]
         public int DirectorId { get; set; }
 
         [Display(Name = "Режисер")]

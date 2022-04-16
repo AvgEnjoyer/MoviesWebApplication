@@ -53,7 +53,7 @@ namespace MoviesWebApplication.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(movie);
         }
 
@@ -107,7 +107,7 @@ namespace MoviesWebApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["DirectorId"] = new SelectList(_context.Directors, "DirectorId", "DirectorId", movie.DirectorId);
+            ViewData["DirectorId"] = new SelectList(_context.Directors, "DirectorId", "FullName", movie.DirectorId);
             return View(movie);
         }
 
