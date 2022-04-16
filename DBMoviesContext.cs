@@ -9,6 +9,7 @@ namespace MoviesWebApplication
     {
         public DBMoviesContext()
         {
+            //Database.EnsureCreated();
         }
 
         public DBMoviesContext(DbContextOptions<DBMoviesContext> options)
@@ -106,7 +107,7 @@ namespace MoviesWebApplication
 
                 entity.Property(e => e.Description).HasColumnType("text");
 
-                entity.Property(e => e.LengthMinutes).HasColumnName("Length(minutes)");
+                entity.Property(e => e.LengthMinutes).HasColumnName("LengthMinutes");
 
                 entity.Property(e => e.Title).HasMaxLength(50);
 
