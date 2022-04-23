@@ -103,7 +103,7 @@ namespace MoviesWebApplication
 
             modelBuilder.Entity<Movie>(entity =>
             {
-                entity.Property(e => e.MovieId).ValueGeneratedNever();
+                entity.Property(e => e.MovieId).UseIdentityColumn();//.ValueGeneratedNever();
 
                 entity.Property(e => e.Description).HasColumnType("text");
 

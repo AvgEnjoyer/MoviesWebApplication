@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoviesWebApplication
 {
@@ -11,6 +12,7 @@ namespace MoviesWebApplication
             Movies = new HashSet<Movie>();
         }
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DirectorId { get; set; }
         [Display(Name ="Режисер")]
         public string FullName { get { return string.Format("{0} {1}", Name, Surname); } }

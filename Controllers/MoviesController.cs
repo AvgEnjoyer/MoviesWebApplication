@@ -73,7 +73,7 @@ namespace MoviesWebApplication.Controllers
         {
             
             var director = await _context.Directors.FirstOrDefaultAsync(m => m.DirectorId == movie.DirectorId);
-            
+            movie.Director = director;
             if (ModelState.IsValid)
             {
                 _context.Add(movie);

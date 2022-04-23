@@ -55,7 +55,7 @@ namespace MoviesWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DirectorId,Name,Surname")] Director director)
+        public async Task<IActionResult> Create([Bind("DirectorId, Name,Surname")] Director director)
         {
             if (ModelState.IsValid)
             {
@@ -141,6 +141,14 @@ namespace MoviesWebApplication.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var director = await _context.Directors.FindAsync(id);
+            var movieByDirector = _context.Movies.Where(b => b.DirectorId == id).ToList();//
+            foreach(Movie movie in movieByDirector)//
+            {//
+                movie.Director = null;//
+                movie.DirectorId = null;//
+            }//
+
+
             _context.Directors.Remove(director);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

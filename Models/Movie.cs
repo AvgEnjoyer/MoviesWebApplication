@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 namespace MoviesWebApplication
 {
     public partial class Movie
@@ -13,6 +13,8 @@ namespace MoviesWebApplication
             MoviesOfUsers = new HashSet<MoviesOfUser>();
             Scores = new HashSet<Score>();
         }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display (Name ="Ідентифікатор фільму")]
         public int MovieId { get; set; }
         [Display (Name ="Назва фільму") ]
@@ -23,7 +25,7 @@ namespace MoviesWebApplication
         public int LengthMinutes { get; set; }
         
         [Display(Name ="Ідентифікатор режисера")]
-        public int DirectorId { get; set; }
+        public int? DirectorId { get; set; }
 
         [Display(Name = "Режисер")]
         public virtual Director? Director { get; set; } = null!;
