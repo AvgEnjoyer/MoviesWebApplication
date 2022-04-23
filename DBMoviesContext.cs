@@ -68,7 +68,7 @@ namespace MoviesWebApplication
 
             modelBuilder.Entity<Director>(entity =>
             {
-                entity.Property(e => e.DirectorId).ValueGeneratedNever();
+                entity.Property(e => e.DirectorId).UseIdentityColumn();
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 
