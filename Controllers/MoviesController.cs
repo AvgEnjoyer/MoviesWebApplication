@@ -60,7 +60,7 @@ namespace MoviesWebApplication.Controllers
         // GET: Movies/Create
         public IActionResult Create()
         {
-            ViewData["DirectorId"] = new SelectList(_context.Directors, "DirectorId", "FullName");
+            ViewData["DirectorId"] = new SelectList(_context.Directors.ToList().OrderBy(x=>x.FullName), "DirectorId", "FullName");
             return View();
         }
 
@@ -107,7 +107,7 @@ namespace MoviesWebApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["DirectorId"] = new SelectList(_context.Directors, "DirectorId", "FullName", movie.DirectorId);
+            ViewData["DirectorId"] = new SelectList(_context.Directors.ToList().OrderBy(x => x.FullName), "DirectorId", "FullName", movie.DirectorId);
             return View(movie);
         }
 
