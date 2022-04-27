@@ -77,7 +77,7 @@ namespace MoviesWebApplication
 
             modelBuilder.Entity<Genre>(entity =>
             {
-                entity.Property(e => e.GenreId).ValueGeneratedNever();
+                entity.Property(e => e.GenreId).UseIdentityColumn();
 
                 entity.Property(e => e.Genre1)
                     .HasMaxLength(50)
@@ -86,7 +86,7 @@ namespace MoviesWebApplication
 
             modelBuilder.Entity<GenresInMovie>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn();
 
                 entity.HasOne(d => d.Genre)
                     .WithMany(p => p.GenresInMovies)

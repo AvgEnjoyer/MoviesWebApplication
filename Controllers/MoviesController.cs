@@ -76,6 +76,11 @@ namespace MoviesWebApplication.Controllers
             movie.Director = director;
             if (ModelState.IsValid)
             {
+                if (_context.Movies.Count() == 0)//скинути ідент.
+                { 
+                    _context.Database.ExecuteSqlRaw("DBCC CHECKIDENT('Movies', RESEED, 0);");
+                    _context.SaveChanges();
+                }
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -174,6 +179,7 @@ namespace MoviesWebApplication.Controllers
             var movie = await _context.Movies.FindAsync(id);
             _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
+                       
             return RedirectToAction(nameof(Index));
         }
 

@@ -10,22 +10,22 @@ using MoviesWebApplication;
 
 namespace MoviesWebApplication.Controllers
 {
-    public class DirectorsController : Controller
+    public class GenresController : Controller
     {
         private readonly DBMoviesContext _context;
 
-        public DirectorsController(DBMoviesContext context)
+        public GenresController(DBMoviesContext context)
         {
             _context = context;
         }
 
-        // GET: Directors
+        // GET: Genres
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Directors.ToListAsync());
+            return View(await _context.Genres.ToListAsync());
         }
 
-        // GET: Directors/Details/5
+        // GET: Genres/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,45 +33,39 @@ namespace MoviesWebApplication.Controllers
                 return NotFound();
             }
 
-            var director = await _context.Directors
-                .FirstOrDefaultAsync(m => m.DirectorId == id);
-            if (director == null)
+            var genre = await _context.Genres
+                .FirstOrDefaultAsync(m => m.GenreId == id);
+            if (genre == null)
             {
                 return NotFound();
             }
 
-            //return View(director);
-            return RedirectToAction("Index", "Movies", new { id = director.DirectorId, Name = director.Name });
+            return View(genre);
         }
 
-        // GET: Directors/Create
+        // GET: Genres/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Directors/Create
+        // POST: Genres/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DirectorId, Name,Surname")] Director director)
+        public async Task<IActionResult> Create([Bind("GenreId,Genre1")] Genre genre)
         {
             if (ModelState.IsValid)
             {
-                if (_context.Directors.Count() == 0)//скинути ідент.
-                {
-                    _context.Database.ExecuteSqlRaw("DBCC CHECKIDENT('Directors', RESEED, 0);");
-                    _context.SaveChanges();
-                }
-                _context.Add(director);
+                _context.Add(genre);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(director);
+            return View(genre);
         }
 
-        // GET: Directors/Edit/5
+        // GET: Genres/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,22 +73,22 @@ namespace MoviesWebApplication.Controllers
                 return NotFound();
             }
 
-            var director = await _context.Directors.FindAsync(id);
-            if (director == null)
+            var genre = await _context.Genres.FindAsync(id);
+            if (genre == null)
             {
                 return NotFound();
             }
-            return View(director);
+            return View(genre);
         }
 
-        // POST: Directors/Edit/5
+        // POST: Genres/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DirectorId,Name,Surname")] Director director)
+        public async Task<IActionResult> Edit(int id, [Bind("GenreId,Genre1")] Genre genre)
         {
-            if (id != director.DirectorId)
+            if (id != genre.GenreId)
             {
                 return NotFound();
             }
@@ -103,12 +97,12 @@ namespace MoviesWebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(director);
+                    _context.Update(genre);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DirectorExists(director.DirectorId))
+                    if (!GenreExists(genre.GenreId))
                     {
                         return NotFound();
                     }
@@ -119,10 +113,10 @@ namespace MoviesWebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(director);
+            return View(genre);
         }
 
-        // GET: Directors/Delete/5
+        // GET: Genres/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,38 +124,30 @@ namespace MoviesWebApplication.Controllers
                 return NotFound();
             }
 
-            var director = await _context.Directors
-                .FirstOrDefaultAsync(m => m.DirectorId == id);
-            if (director == null)
+            var genre = await _context.Genres
+                .FirstOrDefaultAsync(m => m.GenreId == id);
+            if (genre == null)
             {
                 return NotFound();
             }
 
-            return View(director);
+            return View(genre);
         }
 
-        // POST: Directors/Delete/5
+        // POST: Genres/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var director = await _context.Directors.FindAsync(id);
-            var movieByDirector = _context.Movies.Where(b => b.DirectorId == id).ToList();//
-            foreach(Movie movie in movieByDirector)//
-            {//
-                movie.Director = null;//
-                movie.DirectorId = null;//
-            }//
-
-
-            _context.Directors.Remove(director);
+            var genre = await _context.Genres.FindAsync(id);
+            _context.Genres.Remove(genre);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DirectorExists(int id)
+        private bool GenreExists(int id)
         {
-            return _context.Directors.Any(e => e.DirectorId == id);
+            return _context.Genres.Any(e => e.GenreId == id);
         }
     }
 }
