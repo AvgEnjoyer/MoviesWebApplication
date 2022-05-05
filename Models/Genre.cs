@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoviesWebApplication
 {
@@ -11,7 +12,8 @@ namespace MoviesWebApplication
             GenresInMovies = new HashSet<GenresInMovie>();
         }
         
-        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GenreId { get; set; }
         [Display(Name="Жанри")]
         public string? Genre1 { get; set; }

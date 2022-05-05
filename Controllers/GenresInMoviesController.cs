@@ -49,8 +49,8 @@ namespace MoviesWebApplication.Controllers
         // GET: GenresInMovies/Create
         public IActionResult Create()
         {
-            ViewData["GenreId"] = new SelectList(_context.Genres, "GenreId", "GenreId");
-            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "MovieId");
+            ViewData["GenreId"] = new SelectList(_context.Genres, "GenreId", "Genre1");
+            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "Title");
             return View();
         }
 
@@ -61,6 +61,11 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,GenreId,MovieId")] GenresInMovie genresInMovie)
         {
+            var movie = await _context.Movies.FirstOrDefaultAsync(x=>x.MovieId==genresInMovie.MovieId);
+            var genre = await _context.Genres.FirstOrDefaultAsync(x=>x.GenreId==genresInMovie.GenreId);
+            genresInMovie.Movie=movie;
+            genresInMovie.Genre = genre;
+            
             if (ModelState.IsValid)
             {
                 _context.Add(genresInMovie);
