@@ -10,22 +10,22 @@ using MoviesWebApplication;
 
 namespace MoviesWebApplication.Controllers
 {
-    public class GenresController : Controller
+    public class ActorsController : Controller
     {
         private readonly DBMoviesContext _context;
 
-        public GenresController(DBMoviesContext context)
+        public ActorsController(DBMoviesContext context)
         {
             _context = context;
         }
 
-        // GET: Genres
+        // GET: Actors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Genres.ToListAsync());
+            return View(await _context.Actors.ToListAsync());
         }
 
-        // GET: Genres/Details/5
+        // GET: Actors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,50 +33,40 @@ namespace MoviesWebApplication.Controllers
                 return NotFound();
             }
 
-            var genre = await _context.Genres
-                .FirstOrDefaultAsync(m => m.GenreId == id);
-            if (genre == null)
+            var actor = await _context.Actors
+                .FirstOrDefaultAsync(m => m.ActorId == id);
+            if (actor == null)
             {
                 return NotFound();
             }
 
-            return View(genre);
+            return View(actor);
         }
 
-        // GET: Genres/Create
+        // GET: Actors/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Genres/Create
+        // POST: Actors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GenreId,Genre1")] Genre genre)
+        public async Task<IActionResult> Create([Bind("ActorId,Name,Surname,BirthDate,HasOscar")] Actor actor)
         {
-            
-            var a = _context.Genres.FirstOrDefault(g => g.Genre1.ToLower() == genre.Genre1.ToLower());
-            
-            if (a!=null)
-            {
-                ModelState.AddModelError("Genre1", "Такий жанр вже існує");
-                return View(genre);
-            }
-
-
-
             if (ModelState.IsValid)
             {
-                _context.Add(genre);
+                _context.Add(actor);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(genre);
+            return View(actor);
         }
 
-        // GET: Genres/Edit/5
+        // GET: Actors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +74,22 @@ namespace MoviesWebApplication.Controllers
                 return NotFound();
             }
 
-            var genre = await _context.Genres.FindAsync(id);
-            if (genre == null)
+            var actor = await _context.Actors.FindAsync(id);
+            if (actor == null)
             {
                 return NotFound();
             }
-            return View(genre);
+            return View(actor);
         }
 
-        // POST: Genres/Edit/5
+        // POST: Actors/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GenreId,Genre1")] Genre genre)
+        public async Task<IActionResult> Edit(int id, [Bind("ActorId,Name,Surname,BirthDate,HasOscar")] Actor actor)
         {
-            if (id != genre.GenreId)
+            if (id != actor.ActorId)
             {
                 return NotFound();
             }
@@ -108,12 +98,12 @@ namespace MoviesWebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(genre);
+                    _context.Update(actor);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GenreExists(genre.GenreId))
+                    if (!ActorExists(actor.ActorId))
                     {
                         return NotFound();
                     }
@@ -124,10 +114,10 @@ namespace MoviesWebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(genre);
+            return View(actor);
         }
 
-        // GET: Genres/Delete/5
+        // GET: Actors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,41 +125,41 @@ namespace MoviesWebApplication.Controllers
                 return NotFound();
             }
 
-            var genre = await _context.Genres
-                .FirstOrDefaultAsync(m => m.GenreId == id);
-            if (genre == null)
+            var actor = await _context.Actors
+                .FirstOrDefaultAsync(m => m.ActorId == id);
+            if (actor == null)
             {
                 return NotFound();
             }
 
-            return View(genre);
+            return View(actor);
         }
 
-        // POST: Genres/Delete/5
+        // POST: Actors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _delete(id);
+             _delete(id);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GenreExists(int id)
+        private bool ActorExists(int id)
         {
-            return _context.Genres.Any(e => e.GenreId == id);
+            return _context.Actors.Any(e => e.ActorId == id);
         }
         public void _delete(int id)
         {
-            var genre = _context.Genres.Find(id);
-            
-            var genresINmovies_records = _context.GenresInMovies.Where(x => x.GenreId == id).ToList();
-            foreach (var item in genresINmovies_records)
+            var actor = _context.Actors.Find(id);
+
+            var actorsINmovies_records = _context.ActorsInMovies.Where(x => x.ActorId == id).ToList();
+            foreach (var item in actorsINmovies_records)
             {
-                new GenresInMoviesController(_context)._delete(item.Id);
+                new ActorsInMoviesController(_context)._delete(item.Id);
             }
-            _context.Genres.Remove(genre);
-            
+            _context.Actors.Remove(actor);
+
         }
     }
 }

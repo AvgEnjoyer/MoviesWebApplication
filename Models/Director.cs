@@ -15,7 +15,7 @@ namespace MoviesWebApplication
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DirectorId { get; set; }
         [Display(Name ="Режисер")]
-        public string FullName { get { return string.Format("{0} {1}", Name, Surname); } }
+        public string FullName { get => $"{Name} {Surname}"; }
 
         [Display (Name="Ім'я")]
         public string? Name { get; set; }

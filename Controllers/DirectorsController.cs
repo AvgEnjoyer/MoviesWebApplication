@@ -146,7 +146,7 @@ namespace MoviesWebApplication.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var director = await _context.Directors.FindAsync(id);
-            var movieByDirector = _context.Movies.Where(b => b.DirectorId == id).ToList();//
+            var movieByDirector = await _context.Movies.Where(b => b.DirectorId == id).ToListAsync();//
             foreach(Movie movie in movieByDirector)//
             {//
                 movie.Director = null;//

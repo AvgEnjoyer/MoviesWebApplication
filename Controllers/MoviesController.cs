@@ -63,7 +63,6 @@ namespace MoviesWebApplication.Controllers
             ViewData["DirectorId"] = new SelectList(_context.Directors.ToList().OrderBy(x=>x.FullName), "DirectorId", "FullName");
             return View();
         }
-
         // POST: Movies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -71,9 +70,8 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MovieId,Title,Description,LengthMinutes,DirectorId")] Movie movie)
         {
-            
-            var director = await _context.Directors.FirstOrDefaultAsync(m => m.DirectorId == movie.DirectorId);
-            movie.Director = director;
+
+            _updateItem(movie);
             if (ModelState.IsValid)
             {
                 if (_context.Movies.Count() == 0)//скинути ідент.
@@ -86,15 +84,6 @@ namespace MoviesWebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DirectorId"] = new SelectList(_context.Directors, "DirectorId", "DirectorId", movie.DirectorId);
-
-
-
-
-
-            var errors = ModelState.Select(x => x.Value.Errors)
-                           .Where(y => y.Count > 0)
-                           .ToList();
-
 
             return View(movie);
         }
@@ -127,7 +116,7 @@ namespace MoviesWebApplication.Controllers
             {
                 return NotFound();
             }
-
+            _updateItem(movie);
             if (ModelState.IsValid)
             {
                 try
@@ -176,16 +165,39 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
-            _context.Movies.Remove(movie);
+            _delete(id);
             await _context.SaveChangesAsync();
-                       
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.MovieId == id);
+        }
+
+        public void _delete(int id)
+        {
+            var movie = _context.Movies.Find(id);
+            
+
+            var actorsINmovies_records = _context.ActorsInMovies.Where(x => x.MovieId == id).ToList();
+            var genresINmovies_records = _context.GenresInMovies.Where(x => x.MovieId == id).ToList();
+            foreach (var item in actorsINmovies_records)
+            {
+                new ActorsInMoviesController(_context)._delete(item.Id);
+            }
+            foreach(var item in genresINmovies_records)
+            {
+                new GenresInMoviesController(_context)._delete(item.Id);
+            }
+            _context.Movies.Remove(movie);
+            
+        }
+        public void _updateItem(Movie movie)
+        {
+            
+            var director = _context.Directors.FirstOrDefault(m => m.DirectorId == movie.DirectorId);
+            movie.Director = director;
         }
     }
 }

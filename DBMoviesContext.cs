@@ -40,7 +40,7 @@ namespace MoviesWebApplication
         {
             modelBuilder.Entity<Actor>(entity =>
             {
-                entity.Property(e => e.ActorId).ValueGeneratedNever();
+                entity.Property(e => e.ActorId).UseIdentityColumn();
 
                 entity.Property(e => e.BirthDate).HasColumnType("datetime");
 
@@ -51,8 +51,8 @@ namespace MoviesWebApplication
 
             modelBuilder.Entity<ActorsInMovie>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
+                entity.Property(e => e.Id).UseIdentityColumn();
+                
                 entity.HasOne(d => d.Actor)
                     .WithMany(p => p.ActorsInMovies)
                     .HasForeignKey(d => d.ActorId)
