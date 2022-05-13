@@ -10,11 +10,13 @@ namespace MoviesWebApplication
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Display(Name = "Жанр")]
         public int GenreId { get; set; }
+        [Display(Name = "Фільм")]
         public int MovieId { get; set; }
-        [Display(Name ="Жанри")]
+  
         public virtual Genre? Genre { get; set; } = null!;
-        [Display(Name = "Фільми")]
+        
         public virtual Movie? Movie { get; set; } = null!;
     }
 }

@@ -7,7 +7,7 @@
 <h1>Режисери@*Index*@</h1>
 
 <p>
-    <a asp-action="Create">Додати запис@*Create New*@</a>
+    <a asp-action="Create">Додати режисера@*Create New*@</a>
 </p>
 <table class="table">
     <thead>
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.Surname)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DirectorId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DirectorId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DirectorId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.DirectorId">Редагувати</a> |
+                <a asp-action="Details" asp-route-id="@item.DirectorId">Деталі</a> |
+                <a asp-action="Delete" asp-route-id="@item.DirectorId">Видалити</a>
             </td>
         </tr>
 }

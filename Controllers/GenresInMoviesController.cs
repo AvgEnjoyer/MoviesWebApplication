@@ -61,7 +61,9 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,GenreId,MovieId")] GenresInMovie genresInMovie)
         {
+            
             _updateItem(genresInMovie);
+            IsExist(genresInMovie);
             
             if (ModelState.IsValid)
             {
@@ -69,8 +71,8 @@ namespace MoviesWebApplication.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "GenreId", "GenreId", genresInMovie.GenreId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "MovieId", genresInMovie.MovieId);
+            ViewData["GenreId"] = new SelectList(_context.Genres, "GenreId", "Genre1", genresInMovie.GenreId);
+            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "Title", genresInMovie.MovieId);
             return View(genresInMovie);
         }
 
@@ -103,7 +105,9 @@ namespace MoviesWebApplication.Controllers
             {
                 return NotFound();
             }
+            IsExist(genresInMovie); 
             _updateItem(genresInMovie);
+           
             if (ModelState.IsValid)
             {
                 try
@@ -124,8 +128,8 @@ namespace MoviesWebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "GenreId", "GenreId", genresInMovie.GenreId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "MovieId", genresInMovie.MovieId);
+            ViewData["GenreId"] = new SelectList(_context.Genres, "GenreId", "Genre1", genresInMovie.GenreId);
+            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "Title", genresInMovie.MovieId);
             return View(genresInMovie);
         }
 
@@ -165,7 +169,7 @@ namespace MoviesWebApplication.Controllers
         }
         public async void _delete(int id)
         {
-            var genresInMovie = await _context.GenresInMovies.FindAsync(id);
+            var genresInMovie =  _context.GenresInMovies.Find(id);
             
             _context.GenresInMovies.Remove(genresInMovie);
         }
@@ -180,6 +184,17 @@ namespace MoviesWebApplication.Controllers
             //_context.Update(genre);
             //_context.Update(movie);
             //_context.SaveChanges();
+        }
+        public void IsExist(GenresInMovie genresInMovie)
+        {
+            var a = _context.GenresInMovies.Where(g => g.GenreId == genresInMovie.GenreId).FirstOrDefault(x => x.MovieId == genresInMovie.MovieId);
+            if (a != null)
+            {
+                ModelState.AddModelError("GenreId", "Такий запис вже існує");
+                ModelState.AddModelError("MovieId", "Такий запис вже існує");
+            }
+           
+
         }
     }
 }

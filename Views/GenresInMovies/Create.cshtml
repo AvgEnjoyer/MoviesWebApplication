@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Ствоити</h1>
 
-<h4>GenresInMovie</h4>
+<h4>Жанр у фільмі</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,10 +15,12 @@
             <div class="form-group">
                 <label asp-for="GenreId" class="control-label"></label>
                 <select asp-for="GenreId" class ="form-control" asp-items="ViewBag.GenreId"></select>
+            <span asp-validation-for="GenreId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MovieId" class="control-label"></label>
                 <select asp-for="MovieId" class ="form-control" asp-items="ViewBag.MovieId"></select>
+            <span asp-validation-for="MovieId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -28,7 +30,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Повернутися до списку</a>
 </div>
 
 @section Scripts {
