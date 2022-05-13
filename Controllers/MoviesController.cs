@@ -72,6 +72,7 @@ namespace MoviesWebApplication.Controllers
         {
 
             _updateItem(movie);
+            IsExist(movie);
             if (ModelState.IsValid)
             {
                 if (_context.Movies.Count() == 0)//скинути ідент.
@@ -83,7 +84,7 @@ namespace MoviesWebApplication.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DirectorId"] = new SelectList(_context.Directors, "DirectorId", "DirectorId", movie.DirectorId);
+            ViewData["DirectorId"] = new SelectList(_context.Directors.ToList().OrderBy(x => x.FullName), "DirectorId", "FullName", movie.DirectorId);
 
             return View(movie);
         }
@@ -117,6 +118,7 @@ namespace MoviesWebApplication.Controllers
                 return NotFound();
             }
             _updateItem(movie);
+            IsExist(movie);
             if (ModelState.IsValid)
             {
                 try
@@ -137,7 +139,7 @@ namespace MoviesWebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DirectorId"] = new SelectList(_context.Directors, "DirectorId", "DirectorId", movie.DirectorId);
+            ViewData["DirectorId"] = new SelectList(_context.Directors.ToList().OrderBy(x => x.FullName), "DirectorId", "FullName", movie.DirectorId);
             return View(movie);
         }
 
@@ -198,6 +200,16 @@ namespace MoviesWebApplication.Controllers
             
             var director = _context.Directors.FirstOrDefault(m => m.DirectorId == movie.DirectorId);
             movie.Director = director;
+        }
+        private void IsExist(Movie movie)
+        {
+            var a = _context.Movies.FirstOrDefault(g => (g.Title.ToLower() == movie.Title.ToLower() && g.DirectorId!=null&&g.DirectorId==movie.DirectorId));
+            
+
+            if (a != null)
+            {   ModelState.AddModelError("Title", "Такий фільм з таким режисером вже існує");
+                ModelState.AddModelError("DirectorId", "Такий фільм з таким режисером вже існує");
+            }
         }
     }
 }

@@ -163,13 +163,12 @@ namespace MoviesWebApplication.Controllers
             _context.Genres.Remove(genre);
             
         }
-        public void IsExist(Genre genre)
+        private void IsExist(Genre genre)
         {
             var a = _context.Genres.FirstOrDefault(g => g.Genre1.ToLower() == genre.Genre1.ToLower());
 
             if (a != null)
                 ModelState.AddModelError("Genre1", "Такий жанр вже існує");
-
         }
     }
 }

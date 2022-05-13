@@ -61,7 +61,7 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ActorId,MovieId")] ActorsInMovie actorsInMovie)
         {
-
+            IsExist(actorsInMovie);
             _updateItem(actorsInMovie);
             if (ModelState.IsValid)
             {
@@ -69,8 +69,8 @@ namespace MoviesWebApplication.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActorId"] = new SelectList(_context.Actors, "ActorId", "ActorId", actorsInMovie.ActorId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "MovieId", actorsInMovie.MovieId);
+            ViewData["ActorId"] = new SelectList(_context.Actors, "ActorId", "FullName", actorsInMovie.ActorId);
+            ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "Title", actorsInMovie.MovieId);
             return View(actorsInMovie);
         }
 
@@ -103,6 +103,7 @@ namespace MoviesWebApplication.Controllers
             {
                 return NotFound();
             }
+            IsExist(actorsInMovie);
             _updateItem(actorsInMovie);
             if (ModelState.IsValid)
             {
@@ -163,11 +164,11 @@ namespace MoviesWebApplication.Controllers
         {
             return _context.ActorsInMovies.Any(e => e.Id == id);
         }
-        public async void _delete(int id)
+        public void _delete(int id)
         {
-            var actorsInMovie = await _context.ActorsInMovies.FindAsync(id);
+            var actorsInMovie = _context.ActorsInMovies.Find(id);
             _context.ActorsInMovies.Remove(actorsInMovie);
-            
+
         }
         public void _updateItem(ActorsInMovie actorsInMovie)
         {
@@ -181,5 +182,14 @@ namespace MoviesWebApplication.Controllers
             //_context.Update(movie);
             //_context.SaveChanges();
         }
-    }
+        private void IsExist(ActorsInMovie actorsInMovie) {
+            var a = _context.ActorsInMovies.FirstOrDefault(g => (g.ActorId == actorsInMovie.ActorId && g.MovieId == actorsInMovie.MovieId));
+            if (a != null)
+            {
+                ModelState.AddModelError("ActorId", "Такий запис вже існує");
+                ModelState.AddModelError("MovieId", "Такий запис вже існує");
+            }
+        }
+
+}
 }

@@ -56,6 +56,9 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ActorId,Name,Surname,BirthDate,HasOscar")] Actor actor)
         {
+            if(DateTime.Now.Year.CompareTo(actor.BirthDate.Year)<=0)
+            { ModelState.AddModelError("BirthDate", "Час задано некоректно"); }
+            IsExist(actor);
             if (ModelState.IsValid)
             {
                 _context.Add(actor);
@@ -89,10 +92,14 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ActorId,Name,Surname,BirthDate,HasOscar")] Actor actor)
         {
+
             if (id != actor.ActorId)
             {
                 return NotFound();
             }
+            if (DateTime.Now.Year.CompareTo(actor.BirthDate.Year) <= 0)
+            { ModelState.AddModelError("BirthDate", "Час задано некоректно"); }
+            IsExist(actor);
 
             if (ModelState.IsValid)
             {
@@ -160,6 +167,22 @@ namespace MoviesWebApplication.Controllers
             }
             _context.Actors.Remove(actor);
 
+        }
+        private void IsExist(Actor actor)
+        {
+
+            var a = _context.Actors.FirstOrDefault(g => (
+            g.Name.ToLower() == actor.Name.ToLower()&&
+            g.Surname.ToLower()==actor.Surname.ToLower() && 
+            g.BirthDate.Year.Equals(actor.BirthDate.Year)
+            )
+            );
+            if (a != null)
+            {
+                ModelState.AddModelError("BirthDate", "Такий актор вже існує");
+                ModelState.AddModelError("Name", "Такий актор вже існує");
+                ModelState.AddModelError("Surname", "Такий актор вже існує");
+            }
         }
     }
 }

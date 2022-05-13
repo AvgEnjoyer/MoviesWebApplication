@@ -57,6 +57,7 @@ namespace MoviesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("DirectorId, Name,Surname")] Director director)
         {
+            IsExist(director);
             if (ModelState.IsValid)
             {
                 if (_context.Directors.Count() == 0)//скинути ідент.
@@ -98,6 +99,7 @@ namespace MoviesWebApplication.Controllers
             {
                 return NotFound();
             }
+            IsExist(director);
 
             if (ModelState.IsValid)
             {
@@ -162,6 +164,16 @@ namespace MoviesWebApplication.Controllers
         private bool DirectorExists(int id)
         {
             return _context.Directors.Any(e => e.DirectorId == id);
+        }
+        private void IsExist(Director director)
+        {
+            var a = _context.Directors.FirstOrDefault(g => (g.Name.ToLower() == director.Name.ToLower() && g.Surname.ToLower() == director.Surname.ToLower())) ;
+
+            if (a != null)
+            {
+                ModelState.AddModelError("Name", "Такий режисер вже існує");
+                ModelState.AddModelError("Surname", "Такий режисер вже існує");
+            }
         }
     }
 }

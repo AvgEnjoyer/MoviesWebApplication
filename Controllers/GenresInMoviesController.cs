@@ -167,7 +167,7 @@ namespace MoviesWebApplication.Controllers
         {
             return _context.GenresInMovies.Any(e => e.Id == id);
         }
-        public async void _delete(int id)
+        public void _delete(int id)
         {
             var genresInMovie =  _context.GenresInMovies.Find(id);
             
