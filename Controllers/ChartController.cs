@@ -27,7 +27,7 @@ namespace MoviesWebApplication.Controllers
                     ofOne.Add(new object[] { item.FullName, a.Count() });
                 else { i += a.Count(); }
             }
-           
+            i+=_context.Movies.Where(x => x.DirectorId == null).ToList().Count();
             ofOne.Add(new object[] { "Без Режисера", i });
             return new JsonResult(ofOne);
         }
