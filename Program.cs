@@ -1,7 +1,12 @@
 using MoviesWebApplication;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +27,20 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseFileServer();
+var options = new StaticFileOptions();
+var contentTypeProvider = (FileExtensionContentTypeProvider)options.ContentTypeProvider ?? new FileExtensionContentTypeProvider();
+contentTypeProvider.Mappings.Add(".data", "application/octet-stream");
+options.ContentTypeProvider = contentTypeProvider;
+app.UseStaticFiles(options);
+
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider
+//    (Path.Combine(builder.Environment.ContentRootPath, "GameFiles")),
+//    RequestPath = "/GameFiles"
+//});
 
 app.UseRouting();
 

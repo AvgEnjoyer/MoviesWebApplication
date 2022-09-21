@@ -1,10 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="wwwroot\GameFiles\Build\2Dproject.data" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\GameFiles\Build\2Dproject.framework.js" />
+    <None Include="wwwroot\GameFiles\Build\2Dproject.loader.js" />
+    <None Include="wwwroot\GameFiles\Build\2Dproject.wasm" />
+    <None Include="wwwroot\GameFiles\TemplateData\favicon.ico" />
+    <None Include="wwwroot\GameFiles\TemplateData\fullscreen-button.png" />
+    <None Include="wwwroot\GameFiles\TemplateData\progress-bar-empty-dark.png" />
+    <None Include="wwwroot\GameFiles\TemplateData\progress-bar-empty-light.png" />
+    <None Include="wwwroot\GameFiles\TemplateData\progress-bar-full-dark.png" />
+    <None Include="wwwroot\GameFiles\TemplateData\progress-bar-full-light.png" />
+    <None Include="wwwroot\GameFiles\TemplateData\style.css" />
+    <None Include="wwwroot\GameFiles\TemplateData\unity-logo-dark.png" />
+    <None Include="wwwroot\GameFiles\TemplateData\unity-logo-light.png" />
+    <None Include="wwwroot\GameFiles\TemplateData\webgl-logo.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.4" />
