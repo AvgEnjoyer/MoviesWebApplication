@@ -324,7 +324,12 @@ namespace MoviesWebApplication.Controllers
         }
         private void IsExist(Director director)
         {
-            var a = _context.Directors.FirstOrDefault(g => (g.Name.ToLower() == director.Name.ToLower() && g.Surname.ToLower() == director.Surname.ToLower())) ;
+            var a = _context.Directors.FirstOrDefault(g => (
+            ((director.Name != null && g.Name.ToLower() == director.Name.ToLower())
+            || (director.Name == null && g.Name == null))
+            &&
+            ((director.Surname != null && g.Surname.ToLower() == director.Surname.ToLower())
+            ||( director.Surname == null&&g.Surname==null)))) ;
 
             if (a != null)
             {

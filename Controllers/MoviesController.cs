@@ -204,16 +204,16 @@ namespace MoviesWebApplication.Controllers
         private void IsExist(Movie movie)
         {
             var a = _context.Movies.FirstOrDefault(g => (g.Title.ToLower() == movie.Title.ToLower() && g.DirectorId!=null&&g.DirectorId==movie.DirectorId));
-
+            
 
             if (a != null)
-            {
+            { 
                 if (a.MovieId != movie.MovieId)
                 {
                     ModelState.AddModelError("Title", "Такий фільм з таким режисером вже існує");
                     ModelState.AddModelError("DirectorId", "Такий фільм з таким режисером вже існує");
                 }
-                _context.Entry(a).State = EntityState.Detached;
+            _context.Entry(a).State = EntityState.Detached;
             }
         }
     }
