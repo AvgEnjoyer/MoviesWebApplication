@@ -24,6 +24,7 @@
     <None Include="wwwroot\GameFiles\TemplateData\unity-logo-dark.png" />
     <None Include="wwwroot\GameFiles\TemplateData\unity-logo-light.png" />
     <None Include="wwwroot\GameFiles\TemplateData\webgl-logo.png" />
+    <None Include="wwwroot\ToDoList\main.js" />
   </ItemGroup>
 
   <ItemGroup>
